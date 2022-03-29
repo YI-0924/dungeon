@@ -136,6 +136,40 @@ void Hero::modifyBoard(vector< vector<char> >& maze, int* x, int* y, int* xCreat
 
 	system("cls");
 	//cout << "移動方向鍵: w:上  s:下  a:左  d:右  q:離開" << "\n";
+	if (act == "Move") {
+		//上一格內
+		if ( a == *x && *y - b == 1) {
+			dir = 'w';
+		}
+
+		//下一格內
+		else if (a == *x &&  b - *y == 1) {
+			dir = 's';
+		}
+
+		//左一格內
+		else if (b == *y && *x - a == 1) {
+			dir = 'a';
+		}
+
+		//右一格內
+		else if (b == *y && a - *x == 1) {
+			dir = 'd';
+		}
+
+		else {
+			drawBoard(maze, *x, *y, *xCreature, *yCreature);
+			dir = 'p';		//default
+		}
+	}
+	else if (act == "Jump") {
+		if (a < SIZE && b < SIZE && a > 0 && b > 0) {
+			*x = a;
+			*y = b;
+		}
+		drawBoard(maze, *x, *y, *xCreature, *yCreature);
+		dir = 'p';		//default
+	}
 
 
 	switch (dir) {
@@ -174,7 +208,7 @@ void Hero::modifyBoard(vector< vector<char> >& maze, int* x, int* y, int* xCreat
 	case 'q':
 		system("pause");
 	default:
-		drawBoard(maze, 1, 1, 6, 6);
+		break;
 	}
 }
 
