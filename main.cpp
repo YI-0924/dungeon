@@ -25,7 +25,7 @@ using namespace std;
 int main() {
 
 	vector< vector<char> > maze;
-	char dir = 0;
+	char dir = '\0';
 	string act, bracket, num1, num2;
 	int a, b;
 
@@ -64,14 +64,32 @@ int main() {
 	hero.makeBoard(maze, &(heroPos.x), &(heroPos.y));
 	hero.drawBoard(maze, heroPos.x, heroPos.y, creaturePos.x, creaturePos.y);
 
+	cout << "The hero has HP : " << hero.getBloodH() << "\nThe hero is level : " << hero.getAttackH();
+	cout << "\nThe hero has EXP : " << hero.getExpH() << "\nNeed 10 to level up\n";
+	cout << "Every time you step on the trigger T, the hero get 10 EXP\n";
+
+	cout << "輸入Move (a,b) 或 Jump (a,b) 或 亂數加空格" << endl;
+	getline(cin, act, ' ');
 	do
 	{
-		getline(cin, act, ' ');
-		getline(cin, bracket, '(');
-		getline(cin, num1, ',');
-		getline(cin, num2, ')');
-		a = stoi(num1);
-		b = stoi(num2);
+		a = 0; 
+		b = 0;
+		dir = '\0';
+		if (act == "Move" || act == "Jump") {
+			getline(cin, bracket, '(');
+			getline(cin, num1, ',');
+			getline(cin, num2, ')');
+			getline(cin, bracket, '\n');
+			a = stoi(num1);
+			b = stoi(num2);
+		}
+		else {
+			getline(cin, bracket, '\n');
+			auto c_string = act.c_str();
+			int len = act.length();
+			dir = c_string[len - 1];
+		}
+
 
 		hero.modifyBoard(maze, &(heroPos.x), &(heroPos.y), &(creaturePos.x), &(creaturePos.y), dir, act, a, b);
 
@@ -103,8 +121,7 @@ int main() {
 			hero.setAttackH(attack);
 			hero.setExpH(0);
 		}
-
-	} while ( cin >> dir);
+	} while (getline(cin, act, ' '));
 
 	cout << "Dead!\n";
 	system("pause");
